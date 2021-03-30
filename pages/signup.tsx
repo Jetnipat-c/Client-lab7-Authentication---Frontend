@@ -7,7 +7,7 @@ const signup = () => {
   const [password, setPassword] = useState<string>("");
   const [age, setAge] = useState<number>();
   const [username, setUsername] = useState<string>("");
-  const handleSigup = async (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
     let result = await axios.post("http://localhost:99/api/register", {
       username,
@@ -38,7 +38,7 @@ const signup = () => {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600"></p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSigup}>
+        <form className="mt-8 space-y-6" onSubmit={handleSignup}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>

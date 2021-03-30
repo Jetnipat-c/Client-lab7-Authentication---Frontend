@@ -1,4 +1,28 @@
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
 export default function Home() {
+  const router = useRouter();
+  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [remember, setRemember] = useState<boolean>(false);
+  console.log(remember);
+  const handleSignin = async (event) => {
+    event.preventDefault();
+    try {
+      let result = await axios.post("http://localhost:99/api/login", {
+        username,
+        password,
+        remember
+      });
+      alert(JSON.stringify(result.data, null, 4));
+    } catch (err) {
+      alert("Incorrect user or password.");
+    }
+  };
+  const reMem = async () => {
+    setRemember(!remember);
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -13,21 +37,22 @@ export default function Home() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600"></p>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" onSubmit={handleSignin}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
-                Email address
+                Username
               </label>
               <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
+                id="username"
+                name="username"
+                type="text"
+                autoComplete="username"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div>
@@ -42,6 +67,7 @@ export default function Home() {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -62,6 +88,7 @@ export default function Home() {
                 name="remember_me"
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                onClick={reMem}
               />
               <label
                 htmlFor="remember_me"
@@ -86,9 +113,9 @@ export default function Home() {
                   aria-hidden="true"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   />
                 </svg>
               </span>
